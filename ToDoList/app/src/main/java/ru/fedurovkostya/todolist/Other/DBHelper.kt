@@ -7,12 +7,12 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 import java.util.concurrent.atomic.AtomicInteger
-//класс непосредственно отвечающий за работу с базой данных SQLite
+// Класс, отвечающий за работу с базой данных SQLite.
 class DBHelper(val context: Context): SQLiteOpenHelper(context,
     DB_NAME,null,
     DB_VERSION
 ){
-    //создание бд
+    // Создание базы данных
     override fun onCreate(db: SQLiteDatabase) {
         val createTaskTable = "CREATE TABLE $TABLE_TASK (" +
                 "$COL_ID integer PRIMARY KEY AUTOINCREMENT," +
@@ -26,7 +26,7 @@ class DBHelper(val context: Context): SQLiteOpenHelper(context,
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
     }
-    //добавление задачи
+    // Добавление задачи
     fun addTask(task: Task):Boolean{
         Log.d("Tag","addTask")
         val db = writableDatabase
@@ -37,7 +37,7 @@ class DBHelper(val context: Context): SQLiteOpenHelper(context,
         val result = db.insert(TABLE_TASK,null,cv)
         return result != (-1).toLong()
     }
-    //обновление задачи по id
+    // Обновление задачи
     fun updateTask(task: Task){
         val db = writableDatabase
         val cv = ContentValues()
@@ -46,13 +46,13 @@ class DBHelper(val context: Context): SQLiteOpenHelper(context,
         cv.put(COL_COLOR,task.color)
         db.update(TABLE_TASK,cv,"$COL_ID=?", arrayOf(task.id.toString()))
     }
-    //удаляет задачу по её id
+    // Удаление задачи по её id
     fun deleteTask(taskId:Long){
         Log.d("Tag","deleteTask")
         val db = writableDatabase
         db.delete(TABLE_TASK,"$COL_ID=?", arrayOf(taskId.toString()))
     }
-    //возвращает задачи, для их отображения
+    // Возвращение задач, для их отображения
     fun getTasks():MutableList<Task>{
         Log.d("Tag","getTasks")
         var result:MutableList<Task> = ArrayList()
